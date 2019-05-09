@@ -60,6 +60,13 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user = User.find_by(email: data.info["email"])
     return if @user
 
+    @user, created = User.create_without_password(
+      username: data.info["email"].match(/([^@]+)/).to_s,
+      email:    data.info["email"],
+      admin:    false
+    )
+    return if created
+
     session["omniauth.auth"] = data.except(:extra)
     redirect_to users_oauth_url
   end
