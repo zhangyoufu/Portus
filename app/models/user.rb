@@ -129,15 +129,6 @@ class User < ApplicationRecord
     [user, created]
   end
 
-  # Returns true this user is allowed to login, otherwise it returns
-  # false. Right now, only users that were created from LDAP cannot login
-  # outside of the LDAP context.
-  def login_allowed?
-    return true if APP_CONFIG.enabled?("ldap")
-
-    encrypted_password != ""
-  end
-
   # Special method used by Devise to require an email on signup. This is always
   # true except for LDAP.
   def email_required?
@@ -254,16 +245,12 @@ class User < ApplicationRecord
 
   # This method is picked up by Devise before signing in a user.
   def active_for_authentication?
-    super && enabled? && login_allowed?
+    super && enabled?
   end
 
   # The flashy message to be shown for disabled users that try to login.
   def inactive_message
-    if login_allowed?
-      "Sorry, this account has been disabled."
-    else
-      "This user can only login through an LDAP server."
-    end
+    "Sorry, this account has been disabled."
   end
 
   # Returns all users who match the query.
