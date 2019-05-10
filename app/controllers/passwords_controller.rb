@@ -60,9 +60,10 @@ class PasswordsController < Devise::PasswordsController
   end
 
   # Prevents the portus user from resetting the password.
+  # A user without password is not allowed to set password either.
   def check_portus
     user = User.find_by(email: resource_params["email"])
-    return if user.nil? || !user.portus?
+    return if user.nil? || (!user.portus? && user.encrypted_password != "")
 
     redirect_to new_user_session_path,
                 alert: "Action not allowed on this user",
