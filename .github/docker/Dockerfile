@@ -12,6 +12,7 @@ COPY --from=0 /srv/Portus/app/models/namespace/auth_scope.rb app/models/namespac
 COPY --from=0 /srv/Portus/app/models/registry.rb app/models/registry.rb
 COPY --from=0 /srv/Portus/app/models/tag.rb app/models/tag.rb
 COPY --from=0 /srv/Portus/app/models/user.rb app/models/user.rb
+COPY --from=0 /srv/Portus/app/views/shared/_header.html.slim app/views/shared/_header.html.slim
 COPY --from=0 /srv/Portus/config/initializers/devise/oauth.rb config/initializers/devise/oauth.rb
 COPY --from=0 /srv/Portus/lib/portus/http_helpers.rb lib/portus/http_helpers.rb
 RUN patch -p1 <portus.patch
@@ -37,5 +38,6 @@ COPY --from=1 /portus/app/models/namespace/auth_scope.rb /srv/Portus/app/models/
 COPY --from=1 /portus/app/models/registry.rb /srv/Portus/app/models/registry.rb
 COPY --from=1 /portus/app/models/tag.rb /srv/Portus/app/models/tag.rb
 COPY --from=1 /portus/app/models/user.rb /srv/Portus/app/models/user.rb
+COPY --from=1 /portus/app/views/shared/_header.html.slim /srv/Portus/app/views/shared/_header.html.slim
 COPY --from=1 /portus/config/initializers/devise/oauth.rb /srv/Portus/config/initializers/devise/oauth.rb
 COPY --from=1 /portus/lib/portus/http_helpers.rb /srv/Portus/lib/portus/http_helpers.rb
