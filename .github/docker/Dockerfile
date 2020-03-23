@@ -51,5 +51,8 @@ COPY --from=1 /portus/lib/portus/http_helpers.rb /srv/Portus/lib/portus/http_hel
 # workaround for https://github.com/SUSE/Portus/issues/2197
 COPY --from=1 /bundler/shared_helpers.rb /srv/Portus/vendor/bundle/ruby/2.6.0/gems/bundler-1.16.4/lib/bundler/shared_helpers.rb 
 
+# workaround for https://github.com/SUSE/Portus/blob/b87d37e4e692b4fe5616b6f0970cb606688c344a/docker/init#L96-L98
+ENV PORTUS_GEM_GLOBAL true
+
 # fix PATH (for sanity)
 ENV PATH /srv/Portus/bin:${PATH}
