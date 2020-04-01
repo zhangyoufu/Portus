@@ -2,8 +2,13 @@
 set -ex
 
 # change Docker daemon config
-DOCKERD_CONFIG=$(jq '.+{experimental:true}' /etc/docker/daemon.json)
-sudo tee /etc/docker/daemon.json <<< "${DOCKERD_CONFIG}"
+if [ -f /etc/docker/daemon.json ]; then
+	DOCKERD_CONFIG=$(sudo cat /etc/docker/daemon.json)
+else
+	DOCKERD_CONFIG={}
+fi
+DOCKERD_CONFIG=$(jq '.+{experimental:true}' <<<"${DOCKERD_CONFIG}")
+sudo tee /etc/docker/daemon.json <<<"${DOCKERD_CONFIG}"
 sudo systemctl restart docker
 
 # generate patch
